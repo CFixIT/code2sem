@@ -1,15 +1,8 @@
-//
-//  main.cpp
-//  task7
-//
-//  Created by Nikita Kolmakov on 05.05.2018.
-//  Copyright © 2018 Interesting Com. All rights reserved.
-//
-
 #include <iostream>
 #include <fstream>
 #include <vector>
 #include <iterator>
+#include <algorithm>
 #define SIZE 80
 using namespace std;
 
@@ -68,18 +61,23 @@ public:
 
 class Search {
 public:
-    void print ()  {
+    void print (char mas[SIZE])  {
         ifstream file1("first.txt", ios::in);
         vector<char> mas9;
+        vector<char> mas10(SIZE);
         
         istream_iterator<char> begin(file1);
         istream_iterator<char> end;
         
         copy (begin, end, back_inserter(mas9));
         
-        copy(mas9.begin(), mas9.end(), ostream_iterator<char>(cout));
+        // copy(mas9.begin(), mas9.end(), ostream_iterator<char>(cout));
         
-        
+        if  (find(mas9.begin(), mas9.end(), mas[SIZE]) != mas9.end()){
+            cout << "данные найдены" << endl;
+        } else {
+            cout << "данных нет" << endl;
+        }
     }
 };
 
@@ -142,6 +140,9 @@ int main(int argc, const char * argv[]) {
         }
     }
     Search k;
-    k.print();
+    char *mas10 = new char [SIZE];
+    gets(mas10);
+    k.print(mas10);
     return 0;
 }
+
