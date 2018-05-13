@@ -76,17 +76,28 @@ public:
 class Run : public Name, public Year, public Edition, public Print, public Pages, public Type {
 public:
     void run() {
-        int k = 0;
-        cout << "Вы хотите отчистить файл?" << endl;
-        cin >> k;
-        if (k == 1) {
-            ofstream file1;
-            file1.open("first.txt", ofstream::out | ofstream::trunc);
-            cout << "Файл был отчищен." << endl;
-            file1.close();
-        } else {
-            cout << "Файл не был отчищен." << endl;
-            file1.close();
+        for (;;) {
+            try {
+                int k = 0;
+                cout << "Вы хотите отчистить файл?" << endl;
+                cin >> k;
+                if ((k >= 2) || (k < 0)) {
+                    throw k;
+                }
+                if (k == 1) {
+                    ofstream file1;
+                    file1.open("first.txt", ofstream::out | ofstream::trunc);
+                    cout << "Файл был отчищен." << endl;
+                    file1.close();
+                    break;
+                } else {
+                    cout << "Файл не был отчищен." << endl;
+                    file1.close();
+                    break;
+                }
+            } catch (int) {
+                cout << "Введите число 0 или 1 " << endl;
+            }
         }
     }
 };
@@ -97,13 +108,14 @@ public:
         ifstream file1("first.txt", ios::in);
         vector<char> mas9;
         vector<char> mas10(SIZE);
+        vector<char>::iterator sb;
         
         istream_iterator<char> begin(file1);
         istream_iterator<char> end;
-        char mas2 = mas[SIZE];
         copy (begin, end, back_inserter(mas9));
         
-        if  (find(mas9.begin(), mas9.end(), mas2) != mas9.end()) {
+        
+        if  (sb == mas9.end()) {
             cout << "Такая книга есть в списке" << endl;
         } else {
             cout << "данных нет" << endl;
@@ -124,7 +136,7 @@ public:
         
         copy (begin, end, back_inserter(mas9));
         
-        
+        cout << "Содержимое файла" << endl;
         for (int i = 1; i < mas9.size(); i++) {
             if (mas9[i] == ';') {
                 mas9[i] = 0x0A;
@@ -135,23 +147,10 @@ public:
     }
 };
 
-class Error {
-public:
-    void Errors () {
-        try {
-            if (!file1) {
-                int a = 1;
-            }
-        } catch (int a) {
-            cout << "Ошибка при открытии файла" << endl;
-        }
-    }
-};
 
 int main(int argc, const char * argv[]) {
     setlocale(0,"");
-    Error er;
-    er.Errors();
+    cout << "Вводите данные на латинице" << endl;
     int z = 1;
     for(;;) {
         if (z == 1) {
@@ -198,8 +197,16 @@ int main(int argc, const char * argv[]) {
             f.year(mas5);
             delete [] mas5;
             
-            cout << "Хотите добавить новую запись?" << " ";
-            cin >> z;
+            for (;;) {
+                try {
+                    cout << "Хотите добавить новую запись?" << " ";
+                    cin >> z;
+                    if ((z < 0) || (z > 1)) throw z;
+                    break;
+                } catch (int) {
+                    cout << "Введите либо 0 либо 1" << endl;
+                }
+            }
             char * mas6 = new char[0];
             gets(mas6);
         }
@@ -237,3 +244,4 @@ int main(int argc, const char * argv[]) {
  Volume[__] = { 1, 2, 3, \0 ,5}
  
  */
+
