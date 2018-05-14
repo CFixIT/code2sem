@@ -45,7 +45,7 @@ public:
 
 class Pages {
 public:
-    void pages (int mas3[SIZE]) {
+    void pages (char mas3[SIZE]) {
         file1 << "Number of pages: " << *mas3 << "\t";
     }
     void pages1 () {
@@ -76,27 +76,27 @@ public:
 class Run : public Name, public Year, public Edition, public Print, public Pages, public Type {
 public:
     void run() {
+        char k = 0;
         for (;;) {
             try {
-                int k = 0;
                 cout << "Вы хотите отчистить файл?" << endl;
                 cin >> k;
-                if ((k >= 2) || (k < 0)) {
+                if ((k > '1') || (k < '0')) {
                     throw k;
                 }
-                if (k == 1) {
+                if (k == '1') {
                     ofstream file1;
                     file1.open("first.txt", ofstream::out | ofstream::trunc);
                     cout << "Файл был отчищен." << endl;
                     file1.close();
                     break;
                 } else {
-                    cout << "Файл не был отчищен." << endl;
+                    cout << "Файл не был тронут." << endl;
                     file1.close();
                     break;
                 }
-            } catch (int) {
-                cout << "Введите число 0 или 1 " << endl;
+            } catch (char) {
+                cout << "Введите 0 или 1 " << endl;
             }
         }
     }
@@ -108,17 +108,17 @@ public:
         ifstream file1("first.txt", ios::in);
         vector<char> mas9;
         vector<char> mas10(SIZE);
-        vector<char>::iterator sb;
         
         istream_iterator<char> begin(file1);
         istream_iterator<char> end;
         copy (begin, end, back_inserter(mas9));
         
-        
-        if  (sb == mas9.end()) {
-            cout << "Такая книга есть в списке" << endl;
-        } else {
-            cout << "данных нет" << endl;
+        for (int i = 1; i < mas9.size(); i++) {
+            if  (mas[SIZE] == mas9[i]) {
+                cout << "Такая книга есть в списке" << endl;
+            } else {
+                cout << "данных нет" << endl;
+            }
         }
     }
 };
@@ -176,12 +176,21 @@ int main(int argc, const char * argv[]) {
             d.print(mas2);
             delete [] mas2;
             
-            int *mas3 = new int [SIZE];
-            cout << "Введи кол-во страниц" << endl;
-            cin >> mas3[0];
-            Pages c;
-            c.pages(mas3);
-            delete [] mas3;
+            
+            char *mas3 = new char [0];
+            for (;;) {
+                cout << "Введи кол-во страниц" << endl;
+                cin >> mas3[0];
+                try {
+                    if ((mas3[0] > 57) || (mas3[0] < 48)) throw mas3[0];
+                    Pages c;
+                    c.pages(mas3);
+                    delete [] mas3;
+                    break;
+                } catch (char) {
+                    cout << "Введите число, а не букву" << endl;
+                }
+            }
             
             int *mas4 = new int [SIZE];
             cout << "Введи тираж" << endl;
@@ -243,5 +252,8 @@ int main(int argc, const char * argv[]) {
  
  Volume[__] = { 1, 2, 3, \0 ,5}
  
+ 
+ [1033024023]
+ [a] [b] [b]
+ 
  */
-
